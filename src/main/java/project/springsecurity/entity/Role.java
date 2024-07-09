@@ -6,7 +6,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-
 @Entity
 @Table(name = "tb_roles")
 public class Role {
@@ -17,6 +16,13 @@ public class Role {
     private Long roleId;
     private String name;
 
+    public Long getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(Long roleId) {
+        this.roleId = roleId;
+    }
 
     public String getName() {
         return name;
@@ -26,18 +32,10 @@ public class Role {
         this.name = name;
     }
 
-    public Long getRoleId() {
-        return roleId;
-    }
-
-    public void setRoleId(Long roleId) {
-        this.roleId = roleId;
-    }
-
-
     public enum Values {
-        BASIC(2L),
-        ADMIN(1L);
+
+        ADMIN(1L),
+        BASIC(2L);
 
         long roleId;
 
@@ -49,5 +47,4 @@ public class Role {
             return roleId;
         }
     }
-
 }
