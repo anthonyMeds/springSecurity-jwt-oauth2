@@ -16,14 +16,14 @@ public class AdminConfig implements CommandLineRunner {
 
     private RoleRepository roleRepository;
     private UserRepository userRepository;
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private BCryptPasswordEncoder passwordEncoder;
 
     public AdminConfig(RoleRepository roleRepository,
-                       UserRepository userRepository,
-                       BCryptPasswordEncoder bCryptPasswordEncoder) {
+                           UserRepository userRepository,
+                           BCryptPasswordEncoder passwordEncoder) {
         this.roleRepository = roleRepository;
         this.userRepository = userRepository;
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -32,21 +32,19 @@ public class AdminConfig implements CommandLineRunner {
 
         var roleAdmin = roleRepository.findByName(Role.Values.ADMIN.name());
 
-        var userAdmin = userRepository.findByUsername("username");
+        var userAdmin = userRepository.findByUsername("admin");
 
         userAdmin.ifPresentOrElse(
                 user -> {
-                    System.out.println("admin existe");
+                    System.out.println("admin ja existe");
                 },
                 () -> {
                     var user = new User();
                     user.setUsername("admin");
-                    user.setPassword(bCryptPasswordEncoder.encode("123"));
+                    user.setPassword(passwordEncoder.encode("123"));
                     user.setRoles(Set.of(roleAdmin));
-
                     userRepository.save(user);
                 }
         );
-
     }
 }
