@@ -31,7 +31,7 @@ public class SecurityConfig {
     private RSAPrivateKey privateKey;
 
 
-    private SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
                 .authorizeHttpRequests(autorize -> autorize.anyRequest().authenticated())
