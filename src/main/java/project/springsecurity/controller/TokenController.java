@@ -36,13 +36,13 @@ public class TokenController {
         var user = userRepository.findByUsername(loginRequest.username());
 
         if (user.isEmpty() || !user.get().isLoginCorrect(loginRequest, bCryptPasswordEncoder)) {
-            throw new BadCredentialsException("Invalid username or password");
+            throw new BadCredentialsException("user or password is invalid!");
         }
 
         var now = Instant.now();
         var expiresIn = 300L;
 
-        var scope = user.get().getRoles()
+        var scopes = user.get().getRoles()
                 .stream()
                 .map(Role::getName)
                 .collect(Collectors.joining(" "));
@@ -50,14 +50,14 @@ public class TokenController {
         var claims = JwtClaimsSet.builder()
                 .issuer("mybackend")
                 .subject(user.get().getUserId().toString())
-                .expiresAt(now.plusSeconds(expiresIn))
                 .issuedAt(now)
-                .claim("scope", scope)
+                .expiresAt(now.plusSeconds(expiresIn))
+                .claim("scope", scopes)
                 .build();
 
         var jwtValue = jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
 
         return ResponseEntity.ok(new LoginResponse(jwtValue, expiresIn));
-
     }
+
 }

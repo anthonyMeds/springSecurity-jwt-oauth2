@@ -38,8 +38,7 @@ public class UserController {
 
         var basicRole = roleRepository.findByName(Role.Values.BASIC.name());
 
-        var userFromDb =  userRepository.findByUsername(dto.username());
-
+        var userFromDb = userRepository.findByUsername(dto.username());
         if (userFromDb.isPresent()) {
             throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY);
         }
@@ -55,10 +54,9 @@ public class UserController {
     }
 
     @GetMapping("/users")
-    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
-    public ResponseEntity<List<User>> listUser() {
+    @PreAuthorize("hasAuthority('SCOPE_admin')")
+    public ResponseEntity<List<User>> listUsers() {
         var users = userRepository.findAll();
-
         return ResponseEntity.ok(users);
     }
 
